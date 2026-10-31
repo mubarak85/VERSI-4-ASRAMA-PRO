@@ -161,8 +161,10 @@
         <div class="p-5 space-y-4">
           <div class="relative w-full rounded-2xl overflow-hidden bg-slate-900 border-2 border-amber-500/30 p-2 shadow-inner">
             <div id="reader" class="w-full min-h-[240px] relative"></div>
+            <!-- Butang Kawalan Kamera Termasuk Tukar Depan/Belakang -->
             <div class="flex gap-2 mt-3">
               <button onclick="mulakanKamera()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-4 rounded-xl text-xs transition-all cursor-pointer shadow-md">Buka Kamera</button>
+              <button onclick="tukarKamera()" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold py-2 px-3 rounded-xl text-xs transition-all cursor-pointer shadow-md" title="Tukar Kamera Depan/Belakang">🔄 Tukar</button>
               <button onclick="tutupKamera()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2 px-4 rounded-xl text-xs transition-all cursor-pointer shadow-md">Tutup Kamera</button>
             </div>
           </div>
@@ -215,7 +217,6 @@
           <button onclick="bukaModalLaporanRasmi()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 text-slate-950 font-black rounded-xl text-xs shadow-lg cursor-pointer transition-all flex items-center justify-center gap-2">
             <span>📊</span> REKOD & LAPORAN PENUH
           </button>
-          <!-- Butang Baharu untuk Laporan Individu -->
           <button onclick="bukaModalLaporanIndividu()" class="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-400 text-slate-950 font-black rounded-xl text-xs shadow-lg cursor-pointer transition-all flex items-center justify-center gap-2">
             <span>👤</span> LAPORAN INDIVIDU / PROFIL
           </button>
@@ -469,6 +470,7 @@
     let senaraiSemasaModalAsrama = [];
     let html5QrCode = null;
     let chartTrendInstance = null;
+    let gunaKameraBelakang = true; 
     const urlAPI = "https://script.google.com/macros/s/AKfycbzma03Js21tMKqVMDzrGo6t6XRqQ_5r9nuyhm0LCd5_a_dQO-A6tJsAvX5OyBkz_5pb/exec";
     
     function formatTarikhDDMMYY(tarikhStr) {
@@ -586,14 +588,28 @@
 
     function mulakanKameraBaru() {
         html5QrCode = new Html5Qrcode("reader");
+        const tetapanKamera = gunaKameraBelakang ? { facingMode: "environment" } : { facingMode: "user" };
+
         html5QrCode.start(
-            { facingMode: "environment" },
+            tetapanKamera,
             { fps: 15, qrbox: { width: 220, height: 220 } },
             (decodedText) => { hantarDataScan(decodedText); },
             (errorMessage) => {}
         ).catch(err => {
             paparNotifikasi("Gagal buka kamera. Sila beri kebenaran.", "GAGAL");
         });
+    }
+
+    async function tukarKamera() {
+        gunaKameraBelakang = !gunaKameraBelakang;
+        paparNotifikasi(gunaKameraBelakang ? "📷 Mod: Kamera Belakang" : "🤳 Mod: Kamera Depan", "AMaran");
+        
+        if (html5QrCode) {
+            await tutupKamera();
+            mulakanKameraBaru();
+        } else {
+            mulakanKamera();
+        }
     }
 
     async function tutupKamera() {
@@ -751,7 +767,6 @@
         paparSenaraiModalAsrama(filtered);
     }
 
-    // Fungsi Laporan Individu
     function bukaModalLaporanIndividu() {
         document.getElementById('modal-laporan-individu').classList.remove('hidden');
     }

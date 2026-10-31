@@ -114,7 +114,7 @@
 
     </div>
 
-    <!-- BAHAGIAN UTAMA: 3 KOLOM (CIRI KIRI, PUSAT PENGIMBAS, MENU KANAN) -->
+    <!-- BAHAGIAN UTAMA: 3 KOLOM -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start relative z-10">
       
       <!-- KOLOM KIRI: CIRI-CIRI KESELAMATAN & SISTEM -->
@@ -204,57 +204,40 @@
           </div>
 
           <!-- TAIP ID MANUAL -->
-<details class="group border-t border-slate-800 pt-2">
-  <summary class="list-none flex justify-between items-center font-semibold text-xs text-slate-400 cursor-pointer py-1 hover:text-amber-400 transition-colors">
-    <span>✏️ Taip ID Manual Cepat</span>
-    <span class="transition group-open:rotate-180 text-[10px]">▼</span>
-  </summary>
-  
-  <div class="mt-2 flex gap-2">
-    <!-- Petak Input -->
-    <input 
-      type="text" 
-      id="id-manual" 
-      onkeydown="if(event.key === 'Enter') kendalikanHantarID()" 
-      placeholder="Taip ID di sini..." 
-      class="w-full px-3 py-2.5 glass-input rounded-xl text-sm uppercase font-mono text-white focus:outline-none"
-    >
-    
-    <!-- Butang Hantar -->
-    <button 
-      type="button" 
-      onclick="kendalikanHantarID()" 
-      class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950 font-bold text-xs rounded-xl transition-all duration-200 flex items-center justify-center gap-1 shrink-0 shadow-lg shadow-amber-500/20"
-    >
-      <span>Hantar</span>
-      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-      </svg>
-    </button>
-  </div>
-</details>
+          <details class="group border-t border-slate-800 pt-2">
+            <summary class="list-none flex justify-between items-center font-semibold text-xs text-slate-400 cursor-pointer py-1 hover:text-amber-400 transition-colors">
+              <span>✏️ Taip ID Manual Cepat</span>
+              <span class="transition group-open:rotate-180 text-[10px]">▼</span>
+            </summary>
+            
+            <div class="mt-2 flex gap-2">
+              <input 
+                type="text" 
+                id="id-manual" 
+                onkeydown="if(event.key === 'Enter') kendalikanHantarID()" 
+                placeholder="Taip ID di sini..." 
+                class="w-full px-3 py-2.5 glass-input rounded-xl text-sm uppercase font-mono text-white focus:outline-none"
+              >
+              <button 
+                type="button" 
+                onclick="kendalikanHantarID()" 
+                class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950 font-bold text-xs rounded-xl transition-all duration-200 flex items-center justify-center gap-1 shrink-0 shadow-lg shadow-amber-500/20"
+              >
+                <span>Hantar</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </button>
+            </div>
+          </details>
 
-<div class="p-4 bg-slate-900/40 border-t border-slate-800 text-center">
-  <p class="text-[11px] text-amber-400 font-semibold">"LETAKKAN QR DI HADAPAN KAMERA • SILA IMBAS KAD PELAJAR"</p>
-</div>
+          <div class="p-4 bg-slate-900/40 border-t border-slate-800 text-center">
+            <p class="text-[11px] text-amber-400 font-semibold">"LETAKKAN QR DI HADAPAN KAMERA • SILA IMBAS KAD PELAJAR"</p>
+          </div>
+        </div>
+      </div>
 
-<script>
-function kendalikanHantarID() {
-  const input = document.getElementById('id-manual');
-  const nilaiID = input.value.trim();
-
-  if (!nilaiID) return;
-
-  // Memanggil fungsi pendaftaran data asal anda
-  if (typeof lewatTaipID === 'function') {
-    lewatTaipID(nilaiID);
-  }
-
-  // Kosongkan petak input selepas hantar
-  input.value = '';
-}
-</script>
-      <!-- KOLOM KANAN: BUTANG TINDAKAN & ANALISIS WARDEN -->
+      <!-- KOLOM KANAN: AKSES WARDEN & RINGKASAN DINAMIK -->
       <div class="lg:col-span-3 space-y-4">
         <div class="cyber-card p-4 rounded-2xl space-y-3 shadow-xl">
           <h3 class="text-xs font-bold text-amber-400 uppercase tracking-widest border-b border-slate-800 pb-2">Akses Warden</h3>
@@ -269,6 +252,7 @@ function kendalikanHantarID() {
           <input type="date" id="pilih-tarikh" onchange="muatNaikStatistik()" class="glass-input rounded-xl px-3 py-2 text-xs font-semibold text-slate-200 focus:outline-none w-full">
         </div>
 
+        <!-- JADUAL RINGKASAN TINGKATAN (DIKEMASKINI DINAMIK) -->
         <div class="cyber-card p-4 rounded-2xl space-y-2 shadow-xl">
           <div class="flex justify-between items-center border-b border-slate-800 pb-2">
             <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Ringkasan Tingkatan</h3>
@@ -280,8 +264,8 @@ function kendalikanHantarID() {
                 <tr>
                   <th class="p-1">Ting.</th>
                   <th class="p-1 text-center">Total</th>
-                  <th class="p-1 text-center">Masuk</th>
-                  <th class="p-1 text-center text-orange-400" id="tajuk-kolum-dinamik">Baki</th>
+                  <th class="p-1 text-center" id="tajuk-kolum-dinamik-utama">Masuk</th>
+                  <th class="p-1 text-center text-orange-400" id="tajuk-kolum-baki-utama">Baki</th>
                 </tr>
               </thead>
               <tbody id="jadual-tingkatan" class="divide-y divide-slate-800/40"></tbody>
@@ -304,14 +288,14 @@ function kendalikanHantarID() {
       <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800 flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg shrink-0">✅</div>
         <div>
-          <p class="text-[10px] text-emerald-400 uppercase font-semibold">Sudah Masuk</p>
+          <p id="label-stat-utama" class="text-[10px] text-emerald-400 uppercase font-semibold">Sudah Masuk</p>
           <p id="poster-stat-masuk" class="text-lg font-black text-emerald-400">0</p>
         </div>
       </div>
       <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800 flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg shrink-0">❌</div>
         <div>
-          <p class="text-[10px] text-rose-400 uppercase font-semibold">Belum Masuk</p>
+          <p id="label-stat-baki" class="text-[10px] text-rose-400 uppercase font-semibold">Belum Masuk</p>
           <p id="poster-stat-belum" class="text-lg font-black text-rose-400">0</p>
         </div>
       </div>
@@ -434,11 +418,11 @@ function kendalikanHantarID() {
           <p id="laporan-stat-total" class="text-xl font-black text-slate-100 mt-1">0</p>
         </div>
         <div class="bg-emerald-950/40 p-3.5 rounded-2xl border border-emerald-900/50">
-          <p class="text-[11px] text-emerald-400 uppercase font-semibold">Sudah Masuk</p>
+          <p id="laporan-label-stat-utama" class="text-[11px] text-emerald-400 uppercase font-semibold">Sudah Masuk</p>
           <p id="laporan-stat-masuk" class="text-xl font-black text-emerald-400 mt-1">0</p>
         </div>
         <div class="bg-orange-950/40 p-3.5 rounded-2xl border border-orange-900/50">
-          <p class="text-[11px] text-orange-400 uppercase font-semibold">Baki Masuk</p>
+          <p id="laporan-label-stat-baki" class="text-[11px] text-orange-400 uppercase font-semibold">Baki Masuk</p>
           <p id="laporan-stat-keluar" class="text-xl font-black text-orange-400 mt-1">0</p>
         </div>
         <div class="bg-amber-950/40 p-3.5 rounded-2xl border border-amber-900/50">
@@ -461,7 +445,7 @@ function kendalikanHantarID() {
 
       <div id="bahagian-belum-masuk" class="space-y-3 pt-2">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-          <h3 class="font-bold text-sm text-rose-400 flex items-center gap-2"><span>⚠️</span> Senarai Pelajar Belum Mendaftar Masuk</h3>
+          <h3 id="tajuk-tabel-bawah" class="font-bold text-sm text-rose-400 flex items-center gap-2"><span>⚠️</span> Senarai Pelajar Belum Mendaftar Masuk</h3>
           <input type="text" id="carian-pelajar" oninput="tapisSenaraiBelumMasuk()" placeholder="🔍 Cari nama / dorm..." class="glass-input px-3 py-1.5 rounded-xl text-xs text-white w-full sm:w-64 focus:outline-none butang-aksi">
         </div>
         <div class="wadah-skrol-cetak overflow-x-auto max-h-60 overflow-y-auto">
@@ -472,7 +456,7 @@ function kendalikanHantarID() {
                 <th class="p-2.5 border border-slate-700">Nama Pelajar</th>
                 <th class="p-2.5 text-center border border-slate-700">Tingkatan</th>
                 <th class="p-2.5 text-center border border-slate-700">Dorm</th>
-                <th class="p-2.5 text-center border border-slate-700">Status</th>
+                <th id="tajuk-kolum-status-bawah" class="p-2.5 text-center border border-slate-700">Status</th>
               </tr>
             </thead>
             <tbody id="laporan-jadual-belum-masuk" class="divide-y divide-slate-800"></tbody>
@@ -496,7 +480,7 @@ function kendalikanHantarID() {
     </div>
   </div>
 
-<script>
+  <script>
     let sedangMemproses = false; 
     let statusSemasaArah = "MASUK";
     let modLaporanRasmi = "MASUK"; 
@@ -557,26 +541,22 @@ function kendalikanHantarID() {
         setTimeout(() => { badge.classList.add('hidden'); }, 4000);
     }
 
-   function setModPergerakan(arah) {
+    function setModPergerakan(arah) {
         statusSemasaArah = arah;
         const btnMasuk = document.getElementById('tab-masuk');
         const btnKeluar = document.getElementById('tab-keluar');
         const tajuk = document.getElementById('tajuk-mod-pengimbas');
-        const tajukKolumDinamik = document.getElementById('tajuk-kolum-dinamik');
 
         if (arah === 'MASUK') {
             btnMasuk.className = "w-full py-2.5 rounded-2xl font-bold text-xs bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 text-center cursor-pointer transition-all flex items-center justify-center gap-1.5";
             btnKeluar.className = "w-full py-2.5 rounded-2xl font-bold text-xs bg-slate-800 text-slate-400 border border-slate-700 text-center cursor-pointer transition-all flex items-center justify-center gap-1.5";
             tajuk.innerHTML = "<span>📥</span> SCAN MASUK ASRAMA";
-            if (tajukKolumDinamik) tajukKolumDinamik.innerText = "MASUK";
         } else {
             btnKeluar.className = "w-full py-2.5 rounded-2xl font-bold text-xs bg-rose-600 text-white shadow-lg shadow-rose-600/30 text-center cursor-pointer transition-all flex items-center justify-center gap-1.5";
             btnMasuk.className = "w-full py-2.5 rounded-2xl font-bold text-xs bg-slate-800 text-slate-400 border border-slate-700 text-center cursor-pointer transition-all flex items-center justify-center gap-1.5";
             tajuk.innerHTML = "<span>📤</span> SCAN KELUAR ASRAMA";
-            if (tajukKolumDinamik) tajukKolumDinamik.innerText = "KELUAR";
         }
         
-        // Muat semula statistik serta-merta mengikut mod baru
         muatNaikStatistik();
     }
 
@@ -621,6 +601,14 @@ function kendalikanHantarID() {
                 document.getElementById('id-manual').value = "";
             }, 800);
         }
+    }
+
+    function kendalikanHantarID() {
+        const input = document.getElementById('id-manual');
+        const nilaiID = input.value.trim();
+        if (!nilaiID) return;
+        hantarDataScan(nilaiID);
+        input.value = '';
     }
 
     function mulakanKamera() {
@@ -681,7 +669,12 @@ function kendalikanHantarID() {
             const masuk = data.keseluruhan.masuk || 0;
             const keluar = data.keseluruhan.keluar || 0;
             
-            // Paparan kad ringkasan atas mengikut mod semasa
+            // KAD STATISTIK UTAMA (MENGIKUT MOD MASUK / KELUAR)
+            const labelUtama = document.getElementById('label-stat-utama');
+            const labelBaki = document.getElementById('label-stat-baki');
+            const thMasuk = document.getElementById('tajuk-kolum-dinamik-utama');
+            const thBaki = document.getElementById('tajuk-kolum-baki-utama');
+
             if (statusSemasaArah === 'MASUK') {
                 const belum = tot - masuk;
                 const peratus = tot > 0 ? ((masuk / tot) * 100).toFixed(1) : 0;
@@ -689,44 +682,59 @@ function kendalikanHantarID() {
                 document.getElementById('poster-stat-masuk').innerText = masuk;
                 document.getElementById('poster-stat-belum').innerText = belum;
                 document.getElementById('poster-stat-peratus').innerText = peratus + "%";
+
+                if(labelUtama) labelUtama.innerText = "Sudah Masuk";
+                if(labelBaki) labelBaki.innerText = "Belum Masuk";
+                if(thMasuk) thMasuk.innerText = "Masuk";
+                if(thBaki) thBaki.innerText = "Baki";
             } else {
+                const bakiAsrama = tot - keluar;
                 const peratusKeluar = tot > 0 ? ((keluar / tot) * 100).toFixed(1) : 0;
                 document.getElementById('poster-stat-total').innerText = tot;
                 document.getElementById('poster-stat-masuk').innerText = keluar;
-                document.getElementById('poster-stat-belum').innerText = tot - keluar;
+                document.getElementById('poster-stat-belum').innerText = bakiAsrama;
                 document.getElementById('poster-stat-peratus').innerText = peratusKeluar + "%";
+
+                if(labelUtama) labelUtama.innerText = "Sudah Keluar";
+                if(labelBaki) labelBaki.innerText = "Kekal di Asrama";
+                if(thMasuk) thMasuk.innerText = "Keluar";
+                if(thBaki) thBaki.innerText = "Kekal";
             }
 
-            // Jadual Tingkatan Ringkas - Dinamik Mutlak Mengikut Mod MASUK / KELUAR
+            // JADUAL RINGKASAN TINGKATAN (SECARA DINAMIK)
             let htmlTing = "";
             const statTing = data.tingkatan || {};
             Object.keys(statTing).sort().forEach(ting => {
                 let d = statTing[ting];
-                
                 let nilaiPapar = 0;
-                let nilaiBakiAtauKekal = 0;
-                let labelWarna = "";
+                let nilaiKedua = 0;
+                let warnaKandungan = "";
 
                 if (statusSemasaArah === 'MASUK') {
-                    nilaiPapar = d.masuk; // Bermula 0, bertambah bila scan masuk
-                    nilaiBakiAtauKekal = d.total - d.masuk; // Baki belum masuk
-                    labelWarna = 'text-emerald-400';
+                    nilaiPapar = d.masuk; 
+                    nilaiKedua = d.total - d.masuk; 
+                    warnaKandungan = 'text-emerald-400';
                 } else {
-                    nilaiPapar = d.keluar; // Bermula 0, bertambah bila scan keluar
-                    nilaiBakiAtauKekal = d.total - d.keluar; // Baki kekal di asrama
-                    labelWarna = 'text-rose-400';
+                    nilaiPapar = d.keluar; 
+                    nilaiKedua = d.total - d.keluar; 
+                    warnaKandungan = 'text-rose-400';
                 }
                 
                 htmlTing += `<tr class="border-b border-slate-800/40">
                     <td class="p-1 font-bold">${ting}</td>
                     <td class="p-1 text-center">${d.total}</td>
-                    <td class="p-1 text-center ${labelWarna}">${nilaiPapar}</td>
-                    <td class="p-1 text-center text-orange-400">${nilaiBakiAtauKekal}</td>
+                    <td class="p-1 text-center ${warnaKandungan}">${nilaiPapar}</td>
+                    <td class="p-1 text-center text-orange-400">${nilaiKedua}</td>
                 </tr>`;
             });
             document.getElementById('jadual-tingkatan').innerHTML = htmlTing || `<tr><td colspan="4" class="p-2 text-center text-slate-500">Tiada data</td></tr>`;
 
-            cacheBelumMasuk = data.belumMasuk || [];
+            // CACHE SENARAI KELUAR / BELUM MASUK
+            if(statusSemasaArah === 'MASUK') {
+                cacheBelumMasuk = data.belumMasuk || [];
+            } else {
+                cacheBelumMasuk = data.sudahKeluar || data.belumMasuk || [];
+            }
             paparJadualBelumMasuk(cacheBelumMasuk);
 
         } catch(e) {}
@@ -735,15 +743,18 @@ function kendalikanHantarID() {
     function paparJadualBelumMasuk(senarai) {
         let html = "";
         senarai.forEach((p, idx) => {
+            let labelStatusBadge = (statusSemasaArah === 'MASUK') ? "BELUM MASUK" : "KELUAR / PULANG";
+            let warnaBadge = (statusSemasaArah === 'MASUK') ? "text-rose-400" : "text-amber-400";
+
             html += `<tr class="hover:bg-slate-900/40">
                 <td class="p-2.5 border border-slate-800 text-center font-bold">${idx + 1}</td>
                 <td class="p-2.5 border border-slate-800 font-semibold text-white"><span class="font-mono text-amber-400">[${p.id}]</span> ${p.nama}</td>
                 <td class="p-2.5 border border-slate-800 text-center">${p.tingkatan}</td>
                 <td class="p-2.5 border border-slate-800 text-center">${p.dorm || '-'}</td>
-                <td class="p-2.5 border border-slate-800 text-center text-rose-400 font-bold">BELUM MASUK</td>
+                <td class="p-2.5 border border-slate-800 text-center ${warnaBadge} font-bold">${labelStatusBadge}</td>
             </tr>`;
         });
-        document.getElementById('laporan-jadual-belum-masuk').innerHTML = html || `<tr><td colspan="5" class="p-4 text-center text-slate-400">Semua pelajar telah mendaftar masuk!</td></tr>`;
+        document.getElementById('laporan-jadual-belum-masuk').innerHTML = html || `<tr><td colspan="5" class="p-4 text-center text-slate-400">Tiada rekod untuk paparan ini.</td></tr>`;
     }
 
     function tapisSenaraiBelumMasuk() {
@@ -800,13 +811,19 @@ function kendalikanHantarID() {
         const tot = d.keseluruhan.total || 0;
         const masuk = d.keseluruhan.masuk || 0;
         const keluar = d.keseluruhan.keluar || 0;
-        const peratus = tot > 0 ? ((masuk / tot) * 100).toFixed(1) : 0;
-
+        
         document.getElementById('laporan-tarikh-papar').innerText = d.tarikhDipilih || '-';
         document.getElementById('laporan-stat-total').innerText = tot;
-        document.getElementById('laporan-stat-masuk').innerText = masuk;
-        document.getElementById('laporan-stat-keluar').innerText = keluar;
-        document.getElementById('laporan-stat-peratus').innerText = peratus + "%";
+
+        if (modLaporanRasmi === 'MASUK') {
+            document.getElementById('laporan-stat-masuk').innerText = masuk;
+            document.getElementById('laporan-stat-keluar').innerText = tot - masuk;
+            document.getElementById('laporan-stat-peratus').innerText = (tot > 0 ? ((masuk / tot) * 100).toFixed(1) : 0) + "%";
+        } else {
+            document.getElementById('laporan-stat-masuk').innerText = keluar;
+            document.getElementById('laporan-stat-keluar').innerText = tot - keluar;
+            document.getElementById('laporan-stat-peratus').innerText = (tot > 0 ? ((keluar / tot) * 100).toFixed(1) : 0) + "%";
+        }
 
         let kepalaHTML = "";
         if (modLaporanRasmi === 'MASUK') {
@@ -821,7 +838,7 @@ function kendalikanHantarID() {
         Object.keys(statTing).sort().forEach(ting => {
             let st = statTing[ting];
             let subVal = modLaporanRasmi === 'MASUK' ? st.masuk : st.keluar;
-            let bakiVal = modLaporanRasmi === 'MASUK' ? (st.total - st.masuk) : (st.total - st.keluar);
+            let bakiVal = st.total - subVal;
             let pct = st.total > 0 ? ((subVal / st.total) * 100).toFixed(1) : 0;
             tbodyHTML += `<tr>
                 <td class="p-2.5 border border-slate-800 font-bold">${ting}</td>
@@ -840,18 +857,27 @@ function kendalikanHantarID() {
         const btnM = document.getElementById('btn-mod-laporan-masuk');
         const btnK = document.getElementById('btn-mod-laporan-keluar');
         const tajukUtama = document.getElementById('tajuk-laporan-utama');
-        const bahagianBelumMasuk = document.getElementById('bahagian-belum-masuk');
+        const labelStatUtama = document.getElementById('laporan-label-stat-utama');
+        const labelStatBaki = document.getElementById('laporan-label-stat-baki');
+        const tajukTabelBawah = document.getElementById('tajuk-tabel-bawah');
+        const kolumStatusBawah = document.getElementById('tajuk-kolum-status-bawah');
 
         if (mod === 'MASUK') {
             btnM.className = "flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-black bg-emerald-600 text-white cursor-pointer shadow-md transition-all";
             btnK.className = "flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-black bg-slate-800 text-slate-400 border border-slate-700 cursor-pointer shadow-md transition-all";
             tajukUtama.innerText = "LAPORAN RASMI PENDAFTARAN MASUK PELAJAR";
-            bahagianBelumMasuk.style.display = "block";
+            if(labelStatUtama) labelStatUtama.innerText = "Sudah Masuk";
+            if(labelStatBaki) labelStatBaki.innerText = "Baki Masuk";
+            if(tajukTabelBawah) tajukTabelBawah.innerHTML = "<span>⚠️</span> Senarai Pelajar Belum Mendaftar Masuk";
+            if(kolumStatusBawah) kolumStatusBawah.innerText = "Status";
         } else {
             btnK.className = "flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-black bg-rose-600 text-white cursor-pointer shadow-md transition-all";
             btnM.className = "flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-black bg-slate-800 text-slate-400 border border-slate-700 cursor-pointer shadow-md transition-all";
             tajukUtama.innerText = "LAPORAN RASMI REKOD KELUAR / PULANG PELAJAR";
-            bahagianBelumMasuk.style.display = "none";
+            if(labelStatUtama) labelStatUtama.innerText = "Sudah Keluar";
+            if(labelStatBaki) labelStatBaki.innerText = "Kekal di Asrama";
+            if(tajukTabelBawah) tajukTabelBawah.innerHTML = "<span>📤</span> Senarai Pelajar Telah Keluar / Pulang";
+            if(kolumStatusBawah) kolumStatusBawah.innerText = "Rekod";
         }
         bukaModalLaporanRasmi();
     }
@@ -862,14 +888,14 @@ function kendalikanHantarID() {
 
     function eksportKeExcel() {
         if (!cacheStatistikGlobal) return;
-        let csvContent = "data:text/csv;charset=utf-8,ID Pelajar,Nama Pelajar,Tingkatan,Dorm,Status Hari Ini\n";
+        let csvContent = "data:text/csv;charset=utf-8,ID Pelajar,Nama Pelajar,Tingkatan,Dorm,Status\n";
         cacheBelumMasuk.forEach(p => {
-            csvContent += `"${p.id}","${p.nama}","${p.tingkatan}","${p.dorm || '-'}","BELUM MASUK"\n`;
+            csvContent += `"${p.id}","${p.nama}","${p.tingkatan}","${p.dorm || '-'}","${statusSemasaArah}\n`;
         });
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `Laporan_Asrama_SMKATB_${cacheStatistikGlobal.tarikhDipilih || 'harian'}.csv`);
+        link.setAttribute("download", `Laporan_${statusSemasaArah}_SMKATB_${cacheStatistikGlobal.tarikhDipilih || 'harian'}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -885,10 +911,10 @@ function kendalikanHantarID() {
             data: {
                 labels: ['Tingkatan 1', 'Tingkatan 2', 'Tingkatan 3', 'Tingkatan 4', 'Tingkatan 5'],
                 datasets: [{
-                    label: 'Sudah Masuk',
+                    label: statusSemasaArah === 'MASUK' ? 'Sudah Masuk' : 'Sudah Keluar',
                     data: [120, 115, 130, 125, 110],
-                    backgroundColor: 'rgba(16, 185, 129, 0.7)',
-                    borderColor: 'rgb(16, 185, 129)',
+                    backgroundColor: statusSemasaArah === 'MASUK' ? 'rgba(16, 185, 129, 0.7)' : 'rgba(244, 63, 94, 0.7)',
+                    borderColor: statusSemasaArah === 'MASUK' ? 'rgb(16, 185, 129)' : 'rgb(244, 63, 94)',
                     borderWidth: 1
                 }]
             },

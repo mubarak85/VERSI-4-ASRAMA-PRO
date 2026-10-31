@@ -568,15 +568,15 @@ function kendalikanHantarID() {
             btnMasuk.className = "w-full py-2.5 rounded-2xl font-bold text-xs bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 text-center cursor-pointer transition-all flex items-center justify-center gap-1.5";
             btnKeluar.className = "w-full py-2.5 rounded-2xl font-bold text-xs bg-slate-800 text-slate-400 border border-slate-700 text-center cursor-pointer transition-all flex items-center justify-center gap-1.5";
             tajuk.innerHTML = "<span>📥</span> SCAN MASUK ASRAMA";
-            if (tajukKolumDinamik) tajukKolumDinamik.innerText = "Baki";
+            if (tajukKolumDinamik) tajukKolumDinamik.innerText = "MASUK";
         } else {
             btnKeluar.className = "w-full py-2.5 rounded-2xl font-bold text-xs bg-rose-600 text-white shadow-lg shadow-rose-600/30 text-center cursor-pointer transition-all flex items-center justify-center gap-1.5";
             btnMasuk.className = "w-full py-2.5 rounded-2xl font-bold text-xs bg-slate-800 text-slate-400 border border-slate-700 text-center cursor-pointer transition-all flex items-center justify-center gap-1.5";
             tajuk.innerHTML = "<span>📤</span> SCAN KELUAR ASRAMA";
-            if (tajukKolumDinamik) tajukKolumDinamik.innerText = "Keluar";
+            if (tajukKolumDinamik) tajukKolumDinamik.innerText = "KELUAR";
         }
         
-        // Muat semula statistik mengikut mod baru yang dipilih secara langsung
+        // Muat semula statistik serta-merta mengikut mod baru
         muatNaikStatistik();
     }
 
@@ -697,21 +697,31 @@ function kendalikanHantarID() {
                 document.getElementById('poster-stat-peratus').innerText = peratusKeluar + "%";
             }
 
-            // Jadual Tingkatan Ringkas - Dinamik mengikut statusSemasaArah
+            // Jadual Tingkatan Ringkas - Dinamik Mutlak Mengikut Mod MASUK / KELUAR
             let htmlTing = "";
             const statTing = data.tingkatan || {};
             Object.keys(statTing).sort().forEach(ting => {
                 let d = statTing[ting];
                 
-                // Ambil nilai yang tepat berdasarkan mod (masuk atau keluar)
-                let nilaiPapar = (statusSemasaArah === 'MASUK') ? d.masuk : d.keluar;
-                let labelWarna = (statusSemasaArah === 'MASUK') ? 'text-emerald-400' : 'text-rose-400';
+                let nilaiPapar = 0;
+                let nilaiBakiAtauKekal = 0;
+                let labelWarna = "";
+
+                if (statusSemasaArah === 'MASUK') {
+                    nilaiPapar = d.masuk; // Bermula 0, bertambah bila scan masuk
+                    nilaiBakiAtauKekal = d.total - d.masuk; // Baki belum masuk
+                    labelWarna = 'text-emerald-400';
+                } else {
+                    nilaiPapar = d.keluar; // Bermula 0, bertambah bila scan keluar
+                    nilaiBakiAtauKekal = d.total - d.keluar; // Baki kekal di asrama
+                    labelWarna = 'text-rose-400';
+                }
                 
                 htmlTing += `<tr class="border-b border-slate-800/40">
                     <td class="p-1 font-bold">${ting}</td>
                     <td class="p-1 text-center">${d.total}</td>
                     <td class="p-1 text-center ${labelWarna}">${nilaiPapar}</td>
-                    <td class="p-1 text-center text-orange-400">${d.total - nilaiPapar}</td>
+                    <td class="p-1 text-center text-orange-400">${nilaiBakiAtauKekal}</td>
                 </tr>`;
             });
             document.getElementById('jadual-tingkatan').innerHTML = htmlTing || `<tr><td colspan="4" class="p-2 text-center text-slate-500">Tiada data</td></tr>`;

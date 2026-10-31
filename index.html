@@ -655,7 +655,7 @@ function kendalikanHantarID() {
         }
     }
 
-    async function muatNaikStatistik() {
+   async function muatNaikStatistik() {
         const inputTarikh = document.getElementById('pilih-tarikh').value;
         let tarikhParam = "";
         if (inputTarikh) {
@@ -692,12 +692,12 @@ function kendalikanHantarID() {
             } else {
                 const peratusKeluar = tot > 0 ? ((keluar / tot) * 100).toFixed(1) : 0;
                 document.getElementById('poster-stat-total').innerText = tot;
-                document.getElementById('poster-stat-masuk').innerText = keluar; // Paparkan jumlah keluar
+                document.getElementById('poster-stat-masuk').innerText = keluar; // Paparkan jumlah keluar sebenar
                 document.getElementById('poster-stat-belum').innerText = tot - keluar; // Baki di asrama
                 document.getElementById('poster-stat-peratus').innerText = peratusKeluar + "%";
             }
 
-            // Jadual Tingkatan Ringkas Dinamik (Ikut Mod Masuk / Keluar)
+            // Jadual Tingkatan Ringkas Dinamik (Bermula dari 0 untuk Keluar)
             let htmlTing = "";
             const statTing = data.tingkatan || {};
             Object.keys(statTing).sort().forEach(ting => {
@@ -719,7 +719,6 @@ function kendalikanHantarID() {
 
         } catch(e) {}
     }
-
     function paparJadualBelumMasuk(senarai) {
         let html = "";
         senarai.forEach((p, idx) => {

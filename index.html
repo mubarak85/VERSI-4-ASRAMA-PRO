@@ -655,7 +655,7 @@ function kendalikanHantarID() {
         }
     }
 
-   async function muatNaikStatistik() {
+ async function muatNaikStatistik() {
         const inputTarikh = document.getElementById('pilih-tarikh').value;
         let tarikhParam = "";
         if (inputTarikh) {
@@ -681,7 +681,7 @@ function kendalikanHantarID() {
             const masuk = data.keseluruhan.masuk || 0;
             const keluar = data.keseluruhan.keluar || 0;
             
-            // Paparan kad ringkasan mengikut mod semasa
+            // Paparan kad ringkasan atas
             if (statusSemasaArah === 'MASUK') {
                 const belum = tot - masuk;
                 const peratus = tot > 0 ? ((masuk / tot) * 100).toFixed(1) : 0;
@@ -692,24 +692,27 @@ function kendalikanHantarID() {
             } else {
                 const peratusKeluar = tot > 0 ? ((keluar / tot) * 100).toFixed(1) : 0;
                 document.getElementById('poster-stat-total').innerText = tot;
-                document.getElementById('poster-stat-masuk').innerText = keluar; // Paparkan jumlah keluar sebenar
-                document.getElementById('poster-stat-belum').innerText = tot - keluar; // Baki di asrama
+                document.getElementById('poster-stat-masuk').innerText = keluar;
+                document.getElementById('poster-stat-belum').innerText = tot - keluar;
                 document.getElementById('poster-stat-peratus').innerText = peratusKeluar + "%";
             }
 
-            // Jadual Tingkatan Ringkas Dinamik (Bermula dari 0 untuk Keluar)
+            // Jadual Tingkatan Ringkas - Dinamik mengikut statusSemasaArah
             let htmlTing = "";
             const statTing = data.tingkatan || {};
             Object.keys(statTing).sort().forEach(ting => {
                 let d = statTing[ting];
-                let nilaiDinamik = (statusSemasaArah === 'MASUK') ? d.masuk : d.keluar;
+                
+                // Jika mod KELUAR, guna d.keluar (bermula 0 & bertambah bila scan). 
+                // Jika mod MASUK, guna d.masuk.
+                let nilaiPapar = (statusSemasaArah === 'MASUK') ? d.masuk : d.keluar;
                 let labelWarna = (statusSemasaArah === 'MASUK') ? 'text-emerald-400' : 'text-rose-400';
                 
                 htmlTing += `<tr class="border-b border-slate-800/40">
                     <td class="p-1 font-bold">${ting}</td>
                     <td class="p-1 text-center">${d.total}</td>
-                    <td class="p-1 text-center ${labelWarna}">${nilaiDinamik}</td>
-                    <td class="p-1 text-center text-orange-400">${d.total - nilaiDinamik}</td>
+                    <td class="p-1 text-center ${labelWarna}">${nilaiPapar}</td>
+                    <td class="p-1 text-center text-orange-400">${d.total - nilaiPapar}</td>
                 </tr>`;
             });
             document.getElementById('jadual-tingkatan').innerHTML = htmlTing || `<tr><td colspan="4" class="p-2 text-center text-slate-500">Tiada data</td></tr>`;

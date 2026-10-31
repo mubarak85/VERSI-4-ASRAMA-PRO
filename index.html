@@ -496,7 +496,7 @@ function kendalikanHantarID() {
     </div>
   </div>
 
-  <script>
+<script>
     let sedangMemproses = false; 
     let statusSemasaArah = "MASUK";
     let modLaporanRasmi = "MASUK"; 
@@ -576,7 +576,7 @@ function kendalikanHantarID() {
             if (tajukKolumDinamik) tajukKolumDinamik.innerText = "Keluar";
         }
         
-        // Muat semula statistik mengikut mod baru yang dipilih
+        // Muat semula statistik mengikut mod baru yang dipilih secara langsung
         muatNaikStatistik();
     }
 
@@ -655,7 +655,7 @@ function kendalikanHantarID() {
         }
     }
 
- async function muatNaikStatistik() {
+    async function muatNaikStatistik() {
         const inputTarikh = document.getElementById('pilih-tarikh').value;
         let tarikhParam = "";
         if (inputTarikh) {
@@ -681,7 +681,7 @@ function kendalikanHantarID() {
             const masuk = data.keseluruhan.masuk || 0;
             const keluar = data.keseluruhan.keluar || 0;
             
-            // Paparan kad ringkasan atas
+            // Paparan kad ringkasan atas mengikut mod semasa
             if (statusSemasaArah === 'MASUK') {
                 const belum = tot - masuk;
                 const peratus = tot > 0 ? ((masuk / tot) * 100).toFixed(1) : 0;
@@ -703,8 +703,7 @@ function kendalikanHantarID() {
             Object.keys(statTing).sort().forEach(ting => {
                 let d = statTing[ting];
                 
-                // Jika mod KELUAR, guna d.keluar (bermula 0 & bertambah bila scan). 
-                // Jika mod MASUK, guna d.masuk.
+                // Ambil nilai yang tepat berdasarkan mod (masuk atau keluar)
                 let nilaiPapar = (statusSemasaArah === 'MASUK') ? d.masuk : d.keluar;
                 let labelWarna = (statusSemasaArah === 'MASUK') ? 'text-emerald-400' : 'text-rose-400';
                 
@@ -722,6 +721,7 @@ function kendalikanHantarID() {
 
         } catch(e) {}
     }
+
     function paparJadualBelumMasuk(senarai) {
         let html = "";
         senarai.forEach((p, idx) => {
@@ -798,7 +798,6 @@ function kendalikanHantarID() {
         document.getElementById('laporan-stat-keluar').innerText = keluar;
         document.getElementById('laporan-stat-peratus').innerText = peratus + "%";
 
-        // Kepala jadual laporan mengikut mod
         let kepalaHTML = "";
         if (modLaporanRasmi === 'MASUK') {
             kepalaHTML = `<tr><th class="p-2.5 border border-slate-700">Tingkatan</th><th class="p-2.5 border border-slate-700 text-center">Jumlah Penuh</th><th class="p-2.5 border border-slate-700 text-center text-emerald-400">Sudah Masuk</th><th class="p-2.5 border border-slate-700 text-center text-orange-400">Baki Belum Masuk</th><th class="p-2.5 border border-slate-700 text-center">Peratusan</th></tr>`;

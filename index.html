@@ -557,7 +557,7 @@ function kendalikanHantarID() {
         setTimeout(() => { badge.classList.add('hidden'); }, 4000);
     }
 
-    function setModPergerakan(arah) {
+   function setModPergerakan(arah) {
         statusSemasaArah = arah;
         const btnMasuk = document.getElementById('tab-masuk');
         const btnKeluar = document.getElementById('tab-keluar');
@@ -575,6 +575,9 @@ function kendalikanHantarID() {
             tajuk.innerHTML = "<span>📤</span> SCAN KELUAR ASRAMA";
             if (tajukKolumDinamik) tajukKolumDinamik.innerText = "Keluar";
         }
+        
+        // Muat semula statistik mengikut mod baru yang dipilih
+        muatNaikStatistik();
     }
 
     async function hantarDataScan(idPelajar) {
@@ -676,21 +679,38 @@ function kendalikanHantarID() {
 
             const tot = data.keseluruhan.total || 0;
             const masuk = data.keseluruhan.masuk || 0;
-            const belum = tot - masuk;
-            const peratus = tot > 0 ? ((masuk / tot) * 100).toFixed(1) : 0;
+            const keluar = data.keseluruhan.keluar || 0;
+            
+            // Paparan kad ringkasan mengikut mod semasa
+            if (statusSemasaArah === 'MASUK') {
+                const belum = tot - masuk;
+                const peratus = tot > 0 ? ((masuk / tot) * 100).toFixed(1) : 0;
+                document.getElementById('poster-stat-total').innerText = tot;
+                document.getElementById('poster-stat-masuk').innerText = masuk;
+                document.getElementById('poster-stat-belum').innerText = belum;
+                document.getElementById('poster-stat-peratus').innerText = peratus + "%";
+            } else {
+                const peratusKeluar = tot > 0 ? ((keluar / tot) * 100).toFixed(1) : 0;
+                document.getElementById('poster-stat-total').innerText = tot;
+                document.getElementById('poster-stat-masuk').innerText = keluar; // Paparkan jumlah keluar
+                document.getElementById('poster-stat-belum').innerText = tot - keluar; // Baki di asrama
+                document.getElementById('poster-stat-peratus').innerText = peratusKeluar + "%";
+            }
 
-            document.getElementById('poster-stat-total').innerText = tot;
-            document.getElementById('poster-stat-masuk').innerText = masuk;
-            document.getElementById('poster-stat-belum').innerText = belum;
-            document.getElementById('poster-stat-peratus').innerText = peratus + "%";
-
-            // Jadual Tingkatan Ringkas
+            // Jadual Tingkatan Ringkas Dinamik (Ikut Mod Masuk / Keluar)
             let htmlTing = "";
             const statTing = data.tingkatan || {};
             Object.keys(statTing).sort().forEach(ting => {
                 let d = statTing[ting];
-                let baki = d.total - d.masuk;
-                htmlTing += `<tr class="border-b border-slate-800/40"><td class="p-1 font-bold">${ting}</td><td class="p-1 text-center">${d.total}</td><td class="p-1 text-center text-emerald-400">${d.masuk}</td><td class="p-1 text-center text-orange-400">${baki}</td></tr>`;
+                let nilaiDinamik = (statusSemasaArah === 'MASUK') ? d.masuk : d.keluar;
+                let labelWarna = (statusSemasaArah === 'MASUK') ? 'text-emerald-400' : 'text-rose-400';
+                
+                htmlTing += `<tr class="border-b border-slate-800/40">
+                    <td class="p-1 font-bold">${ting}</td>
+                    <td class="p-1 text-center">${d.total}</td>
+                    <td class="p-1 text-center ${labelWarna}">${nilaiDinamik}</td>
+                    <td class="p-1 text-center text-orange-400">${d.total - nilaiDinamik}</td>
+                </tr>`;
             });
             document.getElementById('jadual-tingkatan').innerHTML = htmlTing || `<tr><td colspan="4" class="p-2 text-center text-slate-500">Tiada data</td></tr>`;
 
